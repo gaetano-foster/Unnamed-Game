@@ -67,14 +67,14 @@ World::World(std::string mapPath) {
     .addComponent(new RenderComponent(AssetManager::getInstance().getSprite("smile")))
     .addComponent(new ControllerComponent(360, 5, 10, 10))
     .addComponent(new CameraComponent())
-    .addComponent(new ColliderComponent(0, 24, 48, 24, false));
+    .addComponent(new ColliderComponent(10, 24, 28, 24, false));
 
     // TODO: initialize other entities
     m_entities.emplace_back(10 * m_tileLength, 10 * m_tileLength)
     .addComponent(new PhysicsComponent())
     .addComponent(new RectComponent(48, 48))
     .addComponent(new RenderComponent(AssetManager::getInstance().getSprite("smile")))
-    .addComponent(new ColliderComponent());
+    .addComponent(new ColliderComponent(10, 24, 28, 24, false));
 
     for (auto& entity : m_entities) {
         if (!entity.start())
@@ -125,28 +125,6 @@ bool World::render(SDL_Renderer *renderer) {
             }
         }
     }
-
-    auto sortfunc = [](Entity &e1, Entity &e2) {
-        if (e1.hasComponent("RectComponent")) {
-            RectComponent *r1 = (RectComponent*)(e1.getComponent("RectComponent"));
-            if (e2.hasComponent("RectComponent")) {
-                RectComponent *r2 = (RectComponent*)(e2.getComponent("RectComponent"));
-                return (e1.y + r1->height) < (e2.y + r2->height);
-            }
-            else {
-                return (e1.y + r1->height) < (e2.y);
-            }
-        }
-        else {
-            if (e2.hasComponent("RectComponent")) {
-                RectComponent *r2 = (RectComponent*)(e2.getComponent("RectComponent"));
-                return (e1.y) < (e2.y + r2->height);
-            }
-        }
-        return e1.y < e2.y;
-    };
-
-    std::sort(m_entities.begin(), m_entities.end(), sortfunc);
 
     for (auto& entity : m_entities) {
         if (!entity.render(renderer)) {

@@ -67,14 +67,14 @@ World::World(std::string mapPath) {
     .addComponent(new RenderComponent(AssetManager::getInstance().getSprite("smile")))
     .addComponent(new ControllerComponent(360, 5, 10, 10))
     .addComponent(new CameraComponent())
-    .addComponent(new ColliderComponent(10, 24, 28, 24, false));
+    .addComponent(new ColliderComponent(0, 24, 48, 24, false));
 
     // TODO: initialize other entities
     m_entities.emplace_back(10 * m_tileLength, 10 * m_tileLength)
     .addComponent(new PhysicsComponent())
     .addComponent(new RectComponent(48, 48))
-    .addComponent(new RenderComponent(AssetManager::getInstance().getSprite("smile")))
-    .addComponent(new ColliderComponent(10, 24, 28, 24, false));
+    .addComponent(new RenderComponent(Animation({ AssetManager::getInstance().getSprite("water"), AssetManager::getInstance().getSprite("sand_s") }, 1)))
+    .addComponent(new ColliderComponent(0, 24, 48, 24, false));
 
     for (auto& entity : m_entities) {
         if (!entity.start())
@@ -94,6 +94,13 @@ int World::tileAt(int x, int y) const {
 bool World::start() {
     if (m_tileMap == nullptr)
         return false;
+
+    for (int y = 0; y < m_height; y++) {
+        for (int x = 0; x < m_width; x++) {
+            if (TileManager::getInstance().getTile(m_tileMap[y*m_width+x]).name == "null")
+                std::cout << "Error with map [" << m_mapName << "]: Tile #" << m_tileMap[y*m_width+x] << " does not exist!\n(found at <" << x << ", " << y << ">)\n" << std::endl;
+        }
+    }
     
     for (auto& entity : m_entities) {
         if (!entity.start())
@@ -115,14 +122,8 @@ bool World::update(float deltaTime) {
 bool World::render(SDL_Renderer *renderer) {
     for (int y = 0; y < m_height; y++) {
         for (int x = 0; x < m_width; x++) {
-            if (TileManager::getInstance().getTile(m_tileMap[y*m_width+x]).name == "null") {
-                std::cout << "Error with map [" << m_mapName << "]: Tile #" << TileManager::getInstance().getTile(m_tileMap[y*m_width+x]).id << " does not exist!";
+            if (!TileManager::getInstance().getTile(m_tileMap[y*m_width+x]).render(renderer, m_tileLength, x, y))
                 return false;
-            }
-            else {
-                if (!TileManager::getInstance().getTile(m_tileMap[y*m_width+x]).render(renderer, m_tileLength, x, y))
-                    return false;
-            }
         }
     }
 

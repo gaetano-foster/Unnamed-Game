@@ -1,8 +1,12 @@
 #include "SpriteSheet.hh"
 #include <cstdio>
+#include <iostream>
+#include <string>
 
 SpriteSheet::SpriteSheet(const char *path) {
     m_sheet = SDL_LoadBMP(path);
+    if (!m_sheet)
+        std::cout << "Failed to load image at [" << std::string(path) << "]! \n(SDL Error): " << std::string(SDL_GetError()) << std::endl;
 }
 
 SpriteSheet::~SpriteSheet() {

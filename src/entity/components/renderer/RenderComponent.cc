@@ -5,14 +5,16 @@
 #include "states/manager/StateManager.hh"
 #include <iostream>
 
-RenderComponent::RenderComponent() 
-    : m_sprite(nullptr) 
-{ 
+RenderComponent::RenderComponent(Sprite *sprite)
+    : m_sprite(sprite)
+    , m_animated(false)
+{
     m_name = "RenderComponent";
 }
 
-RenderComponent::RenderComponent(Sprite *sprite)
-    : m_sprite(sprite)
+RenderComponent::RenderComponent(Animation animation)
+    : m_animation(animation)
+    , m_animated(true)
 {
     m_name = "RenderComponent";
 }
@@ -20,11 +22,17 @@ RenderComponent::RenderComponent(Sprite *sprite)
 RenderComponent::~RenderComponent() 
 { }
 
+bool RenderComponent::isAnimated() {
+    return m_animated;
+}
+
 bool RenderComponent::start() {
-    return require("RectComponent") && m_sprite != nullptr;
+    return require("RectComponent");
 }
 
 bool RenderComponent::update(float deltaTime) {
+    if (m_animated)
+        m_animation.update(deltaTime);
     return true;
 }
 
@@ -34,10 +42,6 @@ bool RenderComponent::render(SDL_Renderer *renderer) {
     SDL_Rect screen = Camera::getInstance().getScreenArea();
     World *world = StateManager::get().getState()->getGame()->getCurrentWorld();
 
-    if (m_sprite == nullptr) {
-        std::cout << "Error: Sprite of RenderComponent of Entity #" << m_parent->getID() << " is null!" << std::endl;
-        return false;
-    }
     if (SDL_HasIntersection(&me, &screen)) {
         for (auto& entity : world->getEntities()) {
             if (&entity == m_parent)
@@ -51,15 +55,48 @@ bool RenderComponent::render(SDL_Renderer *renderer) {
                     SDL_Rect other = { (int)(entity.x - Camera::getX()), (int)(entity.y - Camera::getY()), (int)orect->width, (int)orect->height };
 
                     if (SDL_HasIntersection(&me, &other)){
-                        if ((me.y + me.h) > (other.y + other.h)) {
-                            return orender->m_sprite->render(renderer, other.x, other.y, other.w, other.h) && m_sprite->render(renderer, me.x, me.y, me.w, me.h);
+                        if (m_animated) {
+                            if (orender->isAnimated()) {
+                                if ((me.y + me.h) > (other.y + other.h)) {
+                                    return orender->m_animation.render(renderer, other.x, other.y, other.w, other.h) && m_animation.render(renderer, me.x, me.y, me.w, me.h);
+                                }
+                                else {
+                                    return m_animation.render(renderer, me.x, me.y, me.w, me.h) && orender->m_animation.render(renderer, other.x, other.y, other.w, other.h);
+                                }
+                            }
+                            else {
+                                if ((me.y + me.h) > (other.y + other.h)) {
+                                    return orender->m_sprite->render(renderer, other.x, other.y, other.w, other.h) && m_animation.render(renderer, me.x, me.y, me.w, me.h);
+                                }
+                                else {
+                                    return m_animation.render(renderer, me.x, me.y, me.w, me.h) && orender->m_sprite->render(renderer, other.x, other.y, other.w, other.h);
+                                }
+                            }
                         }
                         else {
-                            return m_sprite->render(renderer, me.x, me.y, me.w, me.h) && orender->m_sprite->render(renderer, other.x, other.y, other.w, other.h);
+                            if (orender->isAnimated()) {
+                                if ((me.y + me.h) > (other.y + other.h)) {
+                                    return orender->m_animation.render(renderer, other.x, other.y, other.w, other.h) && m_sprite->render(renderer, me.x, me.y, me.w, me.h);
+                                }
+                                else {
+                                    return m_sprite->render(renderer, me.x, me.y, me.w, me.h) && orender->m_animation.render(renderer, other.x, other.y, other.w, other.h);
+                                }
+                            }
+                            else {
+                                if ((me.y + me.h) > (other.y + other.h)) {
+                                    return orender->m_sprite->render(renderer, other.x, other.y, other.w, other.h) && m_sprite->render(renderer, me.x, me.y, me.w, me.h);
+                                }
+                                else {
+                                    return m_sprite->render(renderer, me.x, me.y, me.w, me.h) && orender->m_sprite->render(renderer, other.x, other.y, other.w, other.h);
+                                }
+                            }
                         }
                     }
                 }
             }
+        }
+        if (m_animated) {
+            return m_animation.render(renderer, me.x, me.y, me.w, me.h);
         }
         return m_sprite->render(renderer, me.x, me.y, me.w, me.h); 
     }

@@ -1,12 +1,17 @@
 #ifndef __RENDERCOMPONENT_H__
 #define __RENDERCOMPONENT_H__
 #include "entity/components/Component.hh"
+#include "gfx/animation/Animation.hh"
 #include "gfx/sprite/Sprite.hh"
 
 class RenderComponent : public Component {
 public:
     RenderComponent(Sprite *sprite);
+    RenderComponent(Animation animation);
     ~RenderComponent();
+
+public:
+    bool isAnimated();
 
 protected:
     bool start() override;
@@ -19,5 +24,7 @@ private:
 
 private:
     Sprite *m_sprite;
+    Animation m_animation;
+    bool m_animated = false;
 };
 #endif // __RENDERCOMPONENT_H__

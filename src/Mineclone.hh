@@ -24,11 +24,6 @@ private:
     void run();
 
 private:
-    Mineclone() = delete;
-    Mineclone(const Mineclone& other) = delete;
-    Mineclone(Display&&) = delete;
-
-private:
     int m_maxFPS;
     int m_exitCode = 0;
     bool m_running = false;

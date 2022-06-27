@@ -6,7 +6,7 @@ int TileManager::tileCount = 0;
 
 Tile TileManager::getTile(int id) {
     if (id < 0 || id >= tileCount) {
-        return { nullptr, "null", false, id };
+        return { AssetManager::getInstance().getSprite("null"), "null", false, -1 };
     }
     return m_tiles[id];
 }
@@ -17,12 +17,20 @@ Tile TileManager::getTile(std::string name) {
             return tile;
         }
     }
-    return { nullptr, name, false, -1 };
+    return { AssetManager::getInstance().getSprite("null"), "null", false, -1 };
 }
 
 void TileManager::init() {
-    addTile(AssetManager::getInstance().getSprite("grass"), "grass", false);
-    addTile(AssetManager::getInstance().getSprite("dirt"), "dirt", true);
+    auto sprite = [](const char *name) { return AssetManager::getInstance().getSprite(name); };
+
+    addTile(sprite("grass"), "grass", false);
+    addTile(sprite("dirt"), "dirt", false);
+    addTile(sprite("stone"), "stone", false);
+    addTile(sprite("sand"), "sand", false);
+    addTile(sprite("grass_s"), "grass_s", true);
+    addTile(sprite("dirt_s"), "dirt_s", true);
+    addTile(sprite("stone_s"), "stone_s", true);
+    addTile(sprite("sand_s"), "sand_s", true);
 }
 
 TileManager& TileManager::getInstance() {

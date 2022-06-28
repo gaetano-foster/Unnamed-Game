@@ -2,7 +2,7 @@
 
 PhysicsComponent::PhysicsComponent()
     : velocity({ 0, 0 })
-    , MAX_SPEED(200) 
+    , MAX_SPEED(800) 
 {
     m_name = "PhysicsComponent";
 }

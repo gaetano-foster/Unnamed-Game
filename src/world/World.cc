@@ -68,7 +68,7 @@ World::World(std::string mapPath) {
     .addComponent(new RenderComponent(AssetManager::getInstance().getPlayerAnims()[0]))
     .addComponent(new ControllerComponent(360, 5, 10, 10))
     .addComponent(new CameraComponent())
-    .addComponent(new ColliderComponent(10, 28, 28, 20, false))
+    .addComponent(new ColliderComponent(10, 28, 28, 18, false))
     .addComponent(new MouseComponent(AssetManager::getInstance().getPlayerAnims()));
 
     // TODO: initialize other entities

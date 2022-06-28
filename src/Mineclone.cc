@@ -17,7 +17,7 @@ Mineclone::Mineclone(const char* t, int w, int h, int fps)
     SDL_Init(SDL_INIT_EVERYTHING);
     m_display.construct(-1);
     Camera::getInstance().init(0, 0, w, h);
-    AssetManager::getInstance().init(m_display.getRenderer(), "res/smile.bmp", "res/textures/tiles.bmp");
+    AssetManager::getInstance().init(m_display.getRenderer(), "res/textures/entities.bmp", "res/textures/tiles.bmp");
     TileManager::getInstance().init();
     m_gameState = new GameState(this, new World("res/maps/test.tml"));
     StateManager::get().setState(m_gameState);

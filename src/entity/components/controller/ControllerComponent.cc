@@ -24,61 +24,62 @@ bool ControllerComponent::start() {
 
 bool ControllerComponent::update(float deltaTime) {
     PhysicsComponent *c = (PhysicsComponent*)m_parent->getComponent("PhysicsComponent");
+    float dt = deltaTime * 100;
 
     if (Input::getInstance().keyHeld(SC(W))) {
         if (c->vy > 0) {
-            c->vy -= decSpeed;
+            c->vy -= decSpeed * dt;
             if (c->vy <= 0)
                 c->vy = -0.5f;
         }
         else if (c->vy > -topSpeed) {
-            c->vy -= accSpeed;
+            c->vy -= accSpeed * dt;
             if (c->vy <= -topSpeed)
                 c->vy = -topSpeed;
         }
     }
     if (Input::getInstance().keyHeld(SC(S))) {
         if (c->vy < 0) {
-            c->vy += decSpeed;
+            c->vy += decSpeed * dt;
             if (c->vy >= 0)
                 c->vy = 0.5f;
         }
         else if (c->vy < topSpeed) {
-            c->vy += accSpeed;
+            c->vy += accSpeed * dt;
             if (c->vy >= topSpeed)
                 c->vy = topSpeed;
         }
     }
     if (Input::getInstance().keyHeld(SC(A))) {
         if (c->vx > 0) {
-            c->vx -= decSpeed;
+            c->vx -= decSpeed * dt;
             if (c->vx <= 0)
                 c->vx = -0.5f;
         }
         else if (c->vx > -topSpeed) {
-            c->vx -= accSpeed;
+            c->vx -= accSpeed * dt;
             if (c->vx <= -topSpeed)
                 c->vx = -topSpeed;
         }
     }
     if (Input::getInstance().keyHeld(SC(D))) {
         if (c->vx < 0) {
-            c->vx += decSpeed;
+            c->vx += decSpeed * dt;
             if (c->vx >= 0)
                 c->vx = 0.5f;
         }
         else if (c->vx < topSpeed) {
-            c->vx += accSpeed;
+            c->vx += accSpeed * dt;
             if (c->vx >= topSpeed)
                 c->vx = topSpeed;
         }
     }
 
     if (!Input::getInstance().keyHeld(SC(W)) && !Input::getInstance().keyHeld(SC(S)))
-        c->vy -= std::min(fabs(c->vy), friction) * SIGN(c->vy);
+        c->vy -= (std::min(fabs(c->vy), friction) * SIGN(c->vy)) * dt;
 
     if (!Input::getInstance().keyHeld(SC(A)) && !Input::getInstance().keyHeld(SC(D)))
-        c->vx -= std::min(fabs(c->vx), friction) * SIGN(c->vx);
+        c->vx -= (std::min(fabs(c->vx), friction) * SIGN(c->vx)) * dt;
     
     return true;
 }

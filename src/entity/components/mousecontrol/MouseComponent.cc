@@ -33,28 +33,28 @@ bool MouseComponent::update(float deltaTime) {
     int pindex = m_direction;
 
     // Mouse is in the:
-    if (mx <= me.x && my <= me.y) {                     // Top Left
+    if (mx <= me.x && my <= me.y) {                     
         m_direction = TopLeft;
     }
-    else if (mx > me.x + me.w && my <= me.y) {          // Top Right
+    else if (mx > me.x + me.w && my <= me.y) {          
         m_direction = TopRight;
     }
-    else if (mx <= me.x && my > me.y + me.h) {          // Bottom Left
+    else if (mx <= me.x && my > me.y + me.h) {          
         m_direction = BottomLeft;
     }
-    else if (mx > me.x + me.w && my > me.y + me.h) {     // Bottom Right
+    else if (mx > me.x + me.w && my > me.y + me.h) {    
         m_direction = BottomRight;
     }
-    else if (mx < me.x) {                               // Left
+    else if (mx < me.x) {                               
         m_direction = Left;
     }
-    else if (mx > me.x + me.w) {                        // Right
+    else if (mx > me.x + me.w) {                        
         m_direction = Right;
     }
-    else if (my < me.y) {                               // Top
+    else if (my < me.y) {                               
         m_direction = Top;
     }
-    else if (my > me.y + me.h) {                        // Bottom
+    else if (my > me.y + me.h) {                        
         m_direction = Bottom;
     }
 

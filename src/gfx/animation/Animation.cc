@@ -12,11 +12,10 @@ Animation::~Animation()
 { }
 
 bool Animation::update(float deltaTime) {
-    static float shouldSwitch = 0.0f;
-    shouldSwitch += deltaTime;
-    if (shouldSwitch >= m_delay) {
+    m_shouldSwitch += deltaTime;
+    if (m_shouldSwitch >= m_delay) {
         m_index++;
-        shouldSwitch = 0;
+        m_shouldSwitch = 0;
     }
     if (m_index >= m_frames.size())
         m_index = 0;

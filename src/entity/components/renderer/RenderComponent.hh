@@ -12,6 +12,8 @@ public:
 
 public:
     bool isAnimated();
+    void setAnimation(Animation &animation);
+    Animation& getAnimation();
 
 protected:
     bool start() override;

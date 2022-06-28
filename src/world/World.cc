@@ -10,6 +10,7 @@
 #include "entity/components/renderer/RenderComponent.hh"
 #include "entity/components/camera/CameraComponent.hh"
 #include "entity/components/collider/ColliderComponent.hh"
+#include "entity/components/mousecontrol/MouseComponent.hh"
 #include <iostream>
 #include <vector>
 #include <fstream>
@@ -64,10 +65,11 @@ World::World(std::string mapPath) {
     .addComponent(new PhysicsComponent())
     .addComponent(new RectComponent(48, 48))
     .addComponent(new HealthComponent(20))
-    .addComponent(new RenderComponent(AssetManager::getInstance().getSprite("smile")))
+    .addComponent(new RenderComponent(AssetManager::getInstance().getPlayerAnims()[0]))
     .addComponent(new ControllerComponent(360, 5, 10, 10))
     .addComponent(new CameraComponent())
-    .addComponent(new ColliderComponent(0, 24, 48, 24, false));
+    .addComponent(new ColliderComponent(10, 28, 28, 20, false))
+    .addComponent(new MouseComponent(AssetManager::getInstance().getPlayerAnims()));
 
     // TODO: initialize other entities
     m_entities.emplace_back(10 * m_tileLength, 10 * m_tileLength)

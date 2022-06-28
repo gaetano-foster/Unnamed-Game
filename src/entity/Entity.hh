@@ -1,6 +1,6 @@
 #ifndef __ENTITY_H__
 #define __ENTITY_H__
-#include "math/Vector2f.hh"
+#include "math/Vector2.hh"
 #include "Mineclone.hh"
 #include <unordered_map>
 #include <string>

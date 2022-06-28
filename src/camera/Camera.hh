@@ -1,7 +1,7 @@
 #ifndef __CAMERA_H__
 #define __CAMERA_H__
 #include "entity/Entity.hh"
-#include "math/Vector2f.hh"
+#include "math/Vector2.hh"
 #include "io/display/Display.hh"
 #include <SDL2/SDL.h>
 

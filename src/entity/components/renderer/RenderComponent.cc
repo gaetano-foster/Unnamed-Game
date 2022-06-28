@@ -26,6 +26,14 @@ bool RenderComponent::isAnimated() {
     return m_animated;
 }
 
+void RenderComponent::setAnimation(Animation &animation) {
+    m_animation = animation;
+}
+
+Animation& RenderComponent::getAnimation() {
+    return m_animation;
+}
+
 bool RenderComponent::start() {
     return require("RectComponent");
 }

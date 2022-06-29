@@ -66,7 +66,7 @@ World::World(std::string mapPath) {
     .addComponent(new RectComponent(48, 48))
     .addComponent(new HealthComponent(20))
     .addComponent(new RenderComponent(AssetManager::getInstance().getPlayerAnims()[0]))
-    .addComponent(new ControllerComponent(360, 5, 10, 10))
+    .addComponent(new ControllerComponent(250, 10, 15, 5))
     .addComponent(new CameraComponent())
     .addComponent(new ColliderComponent(10, 28, 28, 18, false))
     .addComponent(new MouseComponent(AssetManager::getInstance().getPlayerAnims()));

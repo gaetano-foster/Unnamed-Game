@@ -1,7 +1,7 @@
-#include "Mineclone.hh"
+#include "Game.hh"
 
 int main() {
-    Mineclone game("Hello World", 1280, 720, 1000);
+    Game game("Hello World", 1280, 720, 72);
     game.start();
     return game.getExitCode();
 }

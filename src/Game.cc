@@ -43,15 +43,7 @@ void Game::run() {
     last_time = clock();
 
     while (m_running) {
-    	while (SDL_PollEvent(&e)) {
-            if (e.type == SDL_QUIT) {
-                stop(0);
-                break;
-            }
-            Input::getInstance().update(e);
-        }
-    
-        now = clock();
+    	now = clock();
         delta += (now - last_time) / time_per_tick;
         timer += now - last_time;
         last_time = now;
@@ -64,6 +56,13 @@ void Game::run() {
         }
 
         if (delta >= 1) {
+            while (SDL_PollEvent(&e)) {
+                if (e.type == SDL_QUIT) {
+                    stop(0);
+                    break;
+                }
+                Input::getInstance().update(e);
+            }
             update(deltatime);
             render(m_display.getRenderer());
             ticks++;
